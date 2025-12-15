@@ -33,7 +33,7 @@ export default function EditUser({ params }) {
 
   async function handleUpdate() {
     await updateUser(id, form);
-    router.push("/");
+    router.push("/users");
   }
 
   return (

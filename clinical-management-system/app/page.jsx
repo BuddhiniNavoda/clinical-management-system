@@ -1,97 +1,64 @@
-"use client";
 
-import { useEffect, useState } from "react";
-import { fetchUsers, deleteUser, fetchUserById } from "./api/api";
-import Link from "next/link";
 
-export default function Home() {
-  const [users, setUsers] = useState([]);
-  const [searchId, setSearchId] = useState("");
-  const [searchResult, setSearchResult] = useState(null);
-
-  useEffect(() => {
-    loadUsers();
-  }, []);
-
-  async function loadUsers() {
-    const data = await fetchUsers();
-    setUsers(data);
-  }
-
-  async function handleSearch() {
-    const user = await fetchUserById(searchId);
-    setSearchResult(user);
-  }
-
-  async function handleDelete(id) {
-    await deleteUser(id);
-    loadUsers();
-  }
-
+export default function HomePage() {
   return (
-    <div style={{ padding: 30 }}>
-      {/* Search Section */}
-      <div style={{ marginTop: 20 }}>
-        <input
-          type="number"
-          placeholder="Search by ID"
-          value={searchId}
-          onChange={(e) => setSearchId(e.target.value)}
-        />
-        <button onClick={handleSearch}>Search</button>
+    <div className="min-h-screen">
 
-        {searchResult && (
-          <div>
-            <h3>Search Result:</h3>
-            <p>Name: {searchResult.userName}</p>
-            <p>Email: {searchResult.email}</p>
-            <p>Gender: {searchResult.gender}</p>
-            <p>Blood Group: {searchResult.blood_G}</p>
-            <p>Address: {searchResult.address}</p>
-            <p>DOB: {searchResult.dob}</p>
-          </div>
-        )}
+      {/* Top bar */}
+      <div className="bg-white py-2 px-6 text-sm flex justify-end space-x-4 text-gray-700">
+        <span>📞 +012 345 6789</span>
+        <span>✉ purecare@gmail.com</span>
       </div>
+      <div className="border-b border-gray-200"></div>
+      {/* Navbar */}
+      <nav className="bg-white flex items-center justify-between px-10 py-4 shadow">
+        <div className="flex items-center space-x-3">
+        <img
+          src="/logo.jpg"
+          alt="purecare Logo"
+          className="h-10 w-10"
+        />
+          <h1 className="text-4xl font-bold text-blue-500">PURECARE</h1>
+        </div>
 
-          <Link href="/users/create">
-      <button style={{ marginTop: 20, backgroundColor: "#4CAF50", color: "white" }}>
-        Add New User
-      </button>
-    </Link>
+        <div className="space-x-8 text-black font-blod text-lg"> 
+          <a href="#" className="hover:text-blue-600">Home</a>
+          <a href="#" className="hover:text-blue-600">About</a>
+          <a href="#" className="hover:text-blue-600">Service</a>
+          <a href="#" className="hover:text-blue-600">Pricing</a>
+          <a href="#" className="hover:text-blue-600">Staff</a>
+          <a href="#" className="hover:text-blue-600">Contact</a>
+        </div>
+      </nav>
 
-      {/* Users Table */}
-      <table border="1" width="100%" style={{ marginTop: 30 }}>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Blood_G</th>
-            <th>Gender</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
+      {/* Hero Section */}
+      <div
+        className="relative h-[750px] flex items-center px-20 text-white "
+        style={{
+          backgroundImage: "url('/hero.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black/20"></div>
 
-        <tbody>
-          {users.map((u) => (
-            <tr key={u.userId}>
-              <td>{u.userId}</td>
-              <td>{u.userName}</td>
-              <td>{u.email}</td>
-              <td>{u.blood_G}</td>
-              <td>{u.gender}</td>
-              <td>
-                <Link href={`/users/edit/${u.userId}`}>
-                <button style={{ backgroundColor: "#2196F3", color: "white" }}>Edit</button>
-                </Link>
-                <button onClick={() => handleDelete(u.userId)} style={{ marginLeft: 10 }}>
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        {/* Left Content */}
+        <div className="relative z-10 max-w-xl">
+          <h4 className="text-2xl font-bold uppercase tracking-wide text-blue-400">
+            Welcome to PURECARE
+          </h4>
+
+          <h1 className="text-7xl font-bold mt-3">
+            Best Healthcare Solution <br />
+            In Your City
+          </h1>
+
+          <button className="mt-6 px-8 py-3 bg-blue-600 text-white rounded-lg text-lg">
+            Login
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
