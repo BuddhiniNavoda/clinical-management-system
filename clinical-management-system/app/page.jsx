@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function HomePage() {
   return (
     <div
@@ -18,10 +20,12 @@ export default function HomePage() {
         <h1 className="text-7xl font-bold mt-3">
           Best Healthcare Solution <br /> In Your City
         </h1>
+        <Link href="/login">
+          <button className="mt-6 px-8 py-3 bg-blue-600 text-white rounded-lg">
+            Login
+          </button>
+        </Link>
 
-        <button className="mt-6 px-8 py-3 bg-blue-600 text-white rounded-lg text-lg">
-          Login
-        </button>
       </div>
     </div>
   );

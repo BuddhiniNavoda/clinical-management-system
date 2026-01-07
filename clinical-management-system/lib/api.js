@@ -1,3 +1,4 @@
+/*
 export const API_URL = "http://localhost:8080/api";
 
 export async function fetchUsers() {
@@ -33,3 +34,23 @@ export async function createUser(data) {
   });
   return res.json();
 }
+*/
+
+const API_URL = "http://localhost:8080";
+
+export async function loginUser(loginData) {
+  const res = await fetch(`${API_URL}/auth/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(loginData),
+  });
+
+  if (!res.ok) {
+    throw new Error("Invalid email or password");
+  }
+
+  return res.json();
+}
+
