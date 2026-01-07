@@ -3,20 +3,24 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function SignupPage() {
   const router = useRouter();
 
   const [form, setForm] = useState({
-    name: "",
+    p_name: "",
+    p_address: "",
     email: "",
     password: "",
+    confirmPassword: "",
     dob: "",
     gender: "",
-    address: "",
-    bloodGroup: ""
+    blood_G: ""
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
@@ -28,50 +32,76 @@ export default function SignupPage() {
     setError("");
     setMessage("");
 
+    if (form.password !== form.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    // ✅ EXACT JSON BACKEND EXPECTS
+    const payload = {
+      email: form.email,
+      password: form.password,
+      p_name: form.p_name,
+      p_address: form.p_address,
+      dob: form.dob,
+      gender: form.gender,
+      blood_G: form.blood_G
+    };
+
     try {
       const res = await fetch("http://localhost:8080/patient/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
+      console.log("STATUS:", res.status);
+
+      const text = await res.text();
+      console.log("RESPONSE:", text);
 
       if (!res.ok) {
-        throw new Error();
+        throw new Error(text);
       }
 
-      setMessage("Account created successfully. Redirecting to login...");
+      setMessage("Patient registered successfully. Redirecting to login...");
+      setTimeout(() => router.push("/login"), 1500);
 
-      setTimeout(() => {
-        router.push("/login");
-      }, 1500);
-
-    } catch {
-      setError("Signup failed. Email may already exist.");
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "Signup failed");
     }
   }
 
   return (
     <div
       className="min-h-screen flex items-center justify-center bg-cover bg-center"
-      style={{
-        backgroundImage: "url('/signup.jpg')",
-      }}
+      style={{ backgroundImage: "url('/signup.jpg')" }}
     >
-      <div className="bg-white/90 backdrop-blur-md w-[700px] h-[500px] p-8 rounded-xl shadow-xl">
+      <div className="bg-white/90 backdrop-blur-md w-[520px] p-8 rounded-xl shadow-xl">
 
-        <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
+        <h2 className="text-2xl font-bold text-center text-gray-900 mb-4">
           Patient Sign Up
         </h2>
 
+        {/* FULL NAME */}
         <input
-          name="name"
+          name="p_name"
           placeholder="Full Name"
           className="input"
           onChange={handleChange}
         />
 
+        {/* ADDRESS */}
+        <input
+          name="p_address"
+          placeholder="Address"
+          className="input"
+          onChange={handleChange}
+        />
+
+        {/* EMAIL */}
         <input
           name="email"
           type="email"
@@ -80,14 +110,43 @@ export default function SignupPage() {
           onChange={handleChange}
         />
 
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          className="input"
-          onChange={handleChange}
-        />
+        {/* PASSWORD */}
+        <div className="relative">
+          <input
+            name="password"
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            className="input pr-12"
+            onChange={handleChange}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600"
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
+        </div>
 
+        {/* CONFIRM PASSWORD */}
+        <div className="relative">
+          <input
+            name="confirmPassword"
+            type={showConfirmPassword ? "text" : "password"}
+            placeholder="Confirm Password"
+            className="input pr-12"
+            onChange={handleChange}
+          />
+          <button
+            type="button"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600"
+          >
+            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
+        </div>
+
+        {/* DOB */}
         <input
           name="dob"
           type="date"
@@ -95,6 +154,7 @@ export default function SignupPage() {
           onChange={handleChange}
         />
 
+        {/* GENDER */}
         <select
           name="gender"
           className="input"
@@ -105,15 +165,9 @@ export default function SignupPage() {
           <option>Female</option>
         </select>
 
-        <input
-          name="address"
-          placeholder="Address"
-          className="input"
-          onChange={handleChange}
-        />
-
+        {/* BLOOD GROUP */}
         <select
-          name="bloodGroup"
+          name="blood_G"
           className="input"
           onChange={handleChange}
         >
@@ -128,9 +182,10 @@ export default function SignupPage() {
           <option>AB-</option>
         </select>
 
+        {/* BUTTON */}
         <button
           onClick={handleSignup}
-          className="w-full bg-blue-600 text-white py-3 rounded-lg mt-4 hover:bg-blue-700"
+          className="w-full bg-blue-600 text-white py-3 rounded-lg mt-3 hover:bg-blue-700"
         >
           Sign Up
         </button>
