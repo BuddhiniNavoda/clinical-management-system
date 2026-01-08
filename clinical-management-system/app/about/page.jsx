@@ -29,7 +29,7 @@ export default function AboutPage() {
                       {/* ICON FEATURES */}
                       <div className="font-bold grid grid-cols-4 gap-1 ">
                           <Feature
-                              icon="icon-doctor.png"
+                              icon="/icon-doctor.png"
                               title="Qualified"
                               subtitle="Doctors" />
 
