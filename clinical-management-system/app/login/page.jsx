@@ -23,14 +23,17 @@ export default function LoginPage() {
     try {
       const res = await loginUser({ email, password });
 
+          localStorage.setItem("userId", res.id);
+          localStorage.setItem("userType", res.userType);
+
       setMessage(`Logged in successfully as ${res.userType}`);
 
       // OPTIONAL: redirect based on role
       setTimeout(() => {
-        if (res.userType === "ADMIN") router.push("/admin");
-        else if (res.userType === "DOCTOR") router.push("/doctor");
-        else router.push("/patient");
-      }, 1500);
+        if (res.userType === "Patient") router.push("/patient/dashboard");
+        else if (res.userType === "Doctor") router.push("/doctor/dashboard");
+        else if (res.userType === "Admin") router.push("/admin/dashboard");
+      }, 1000);
 
     } catch (err) {
       setError("Invalid email or password");
