@@ -3,13 +3,15 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function DoctorDashboard() {
+   const router = useRouter();
   const [doctor, setDoctor] = useState(null);
 
   useEffect(() => {
     const accessId = localStorage.getItem("userId");
     const userType = localStorage.getItem("userType");
+   
 
-    if (!accessId || userType !== "DOCTOR") {
+    if (!accessId || userType !== "Doctor") {
       router.push("/doctor/dashboard");
       return;
     }

@@ -10,7 +10,7 @@ export default function PatientDashboard() {
     const accessId = localStorage.getItem("userId");
     const userType = localStorage.getItem("userType");
 
-    if (!accessId || userType !== "PATIENT") {
+    if (!accessId || userType !== "Patient") {
       router.push("/patient/dashboard");
       return;
     }
@@ -25,14 +25,14 @@ export default function PatientDashboard() {
   return (
     <div className="min-h-screen bg-gray-100 p-10">
       <div className="max-w-xl bg-white p-6 rounded-xl shadow-lg mx-auto">
-        <h2 className="text-2xl font-bold mb-4">Patient Dashboard</h2>
+        <h2 className="text-2xl text-blue-600 font-black mb-4">Patient Details</h2>
 
-        <p><strong>Name:</strong> {patient.p_name}</p>
-        <p><strong>Email:</strong> {patient.access.email}</p>
-        <p><strong>Address:</strong> {patient.p_address}</p>
-        <p><strong>Date of Birth:</strong> {patient.dob}</p>
-        <p><strong>Gender:</strong> {patient.gender}</p>
-        <p><strong>Blood Group:</strong> {patient.blood_G}</p>
+        <p className="text-black"><strong>Name:</strong> {patient.p_name}</p>
+        <p className="text-black"><strong>Email:</strong> {patient.access.email}</p>
+        <p className="text-black"><strong>Address:</strong> {patient.p_address}</p>
+        <p className="text-black"><strong>Date of Birth:</strong> {patient.dob}</p>
+        <p className="text-black"><strong>Gender:</strong> {patient.gender}</p>
+        <p className="text-black"><strong>Blood Group:</strong> {patient.blood_G}</p>
       </div>
     </div>
   );
