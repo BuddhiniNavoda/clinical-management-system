@@ -5,15 +5,6 @@ import { useRouter } from "next/navigation";
 export default function AdminDashboard() {
   const router = useRouter();
   const [admin, setAdmin] = useState(null);
-  const [doctorForm, setDoctorForm] = useState({
-    d_name: "",
-    specialization: "",
-    email: "",
-    password: "",
-  });
-
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
 
   useEffect(() => {
     const accessId = localStorage.getItem("userId");
@@ -29,92 +20,64 @@ export default function AdminDashboard() {
       .then(data => setAdmin(data));
   }, [router]);
 
-  function handleChange(e) {
-    setDoctorForm({ ...doctorForm, [e.target.name]: e.target.value });
-  }
-
-  async function handleAddDoctor() {
-    setError("");
-    setMessage("");
-
-    try {
-      const res = await fetch("http://localhost:8080/admin/add-doctor", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(doctorForm),
-      });
-
-      const text = await res.text();
-      if (!res.ok) throw new Error(text);
-
-      setMessage("Doctor added successfully!");
-      setDoctorForm({ d_name: "", email: "", password: "", specialization: "" });
-
-    } catch (err) {
-      setError(err.message || "Failed to add doctor");
-    }
-  }
-
   if (!admin) return <p className="p-10">Loading...</p>;
 
   return (
-    <div className="min-h-screen bg-gray-100 p-10 space-y-6">
+    <div className="min-h-screen flex bg-gray-100">
 
-      <div className="max-w-xl bg-white p-6 rounded-xl shadow-lg mx-auto">
-        <h2 className="text-blue-600 text-2xl font-bold mb-4">Admin Dashboard</h2>
-        <p className="text-black"><strong>Email:</strong> {admin.email}</p>
-        <p className="text-black"><strong>Role:</strong> {admin.userType}</p>
-      </div>
-
-      <div className="max-w-xl bg-white p-6 rounded-xl shadow-lg mx-auto">
-        <h3 className="text-xl text-blue-600 font-bold mb-4">Add Doctor</h3>
-
-        <input
-          name="d_name"
-          placeholder="Doctor Name"
-          className="input"
-          value={doctorForm.d_name}
-          onChange={handleChange}
-        />
-
-        <input
-          name="email"
-          type="email"
-          placeholder="Doctor Email"
-          className="input"
-          value={doctorForm.email}
-          onChange={handleChange}
-        />
-
-        <input
-          name="password"
-          type="password"
-          placeholder="Doctor Password"
-          className="input"
-          value={doctorForm.password}
-          onChange={handleChange}
-        />
-
-        <input
-          name="specialization"
-          placeholder="Specialization"
-          className="input"
-          value={doctorForm.specialization}
-          onChange={handleChange}
-        />
+      {/* LEFT SIDEBAR */}
+      <div className="w-64 bg-cyan-600 text-white p-6 space-y-6">
+        <h2 className="text-2xl font-bold">Admin Dashboard</h2>
 
         <button
-          onClick={handleAddDoctor}
-          className="w-full bg-blue-600 text-white py-3 rounded-lg mt-3 hover:bg-blue-700"
+          onClick={() => router.push("/admin/addDoctors")}
+          className="block w-full text-left hover:bg-blue-600 p-2 rounded"
         >
           Add Doctor
         </button>
 
-        {message && <p className="text-green-600 text-center mt-4">{message}</p>}
-        {error && <p className="text-red-600 text-center mt-4">{error}</p>}
+        <button
+          onClick={() => router.push("/admin/appointments")}
+          className="block w-full text-left hover:bg-blue-600 p-2 rounded"
+        >
+          View Appointments
+        </button>
+
+        <button
+          onClick={() => router.push("/admin/edit-profile")}
+          className="block w-full text-left hover:bg-blue-600 p-2 rounded"
+        >
+          Edit Profile
+        </button>
+
+        <button
+          onClick={() => {
+            localStorage.clear();
+            router.push("/login");
+          }}
+          className="block w-full text-left hover:bg-red-600 p-2 rounded mt-10"
+        >
+          Logout
+        </button>
       </div>
 
+      {/* RIGHT CONTENT */}
+      <div className="flex-1 p-10">
+
+        <h1 className="text-3xl font-bold text-gray-800 mb-4">
+          Welcome Admin 👋
+        </h1>
+
+        <div className="bg-white p-6 rounded-xl shadow-lg max-w-xl">
+          <h2 className="text-xl font-bold mb-4 text-blue-600">
+            Your Profile
+          </h2>
+
+          <p className="text-black"><strong>Email:</strong> {admin.email}</p>
+          <p className="text-black"><strong>Role:</strong> {admin.userType}</p>
+        </div>
+
+      </div>
     </div>
   );
 }
-

@@ -24,14 +24,50 @@ export default function DoctorDashboard() {
   if (!doctor) return <p className="p-10">Loading...</p>;
 
   return (
-    <div className="min-h-screen bg-gray-100 p-10">
-      <div className="max-w-xl bg-white p-6 rounded-xl shadow-lg mx-auto">
-        <h2 className="text-2xl font-bold mb-4">Doctor Dashboard</h2>
+    <div className="min-h-screen flex bg-gray-100">
 
-        <p><strong>Name:</strong> {doctor.name}</p>
-        <p><strong>Email:</strong> {doctor.access.email}</p>
-        <p><strong>Specialization:</strong> {doctor.specialization}</p>
+      {/* LEFT SIDEBAR */}
+      <div className="w-64 bg-cyan-600 text-white p-6 space-y-6">
+        <h2 className="text-2xl font-bold">Doctor Dashboard</h2>
+
+        <button className="block w-full text-left hover:bg-blue-600 p-2 rounded">
+          Edit Profile
+        </button>
+
+        <button className="block w-full text-left hover:bg-blue-600 p-2 rounded">
+          View Appointment
+        </button>
+
+        <button className="block w-full text-left hover:bg-blue-600 p-2 rounded">
+          Schedule Available Date
+        </button>
+
+        <button
+          onClick={() => {
+            localStorage.clear();
+            router.push("/login");
+          }}
+          className="block w-full text-left hover:bg-red-600 p-2 rounded mt-10"
+        >
+          Logout
+        </button>
+      </div>
+      {/* RIGHT CONTENT */}
+      <div className="flex-1 p-10">
+
+        <h1 className="text-3xl font-bold text-gray-800 mb-4">
+          Welcome {doctor.d_name} !
+        </h1>
+
+        <div className="bg-white p-6 rounded-xl shadow-lg max-w-xl">
+          <h2 className="text-xl font-bold mb-4 text-blue-600">
+            Your Profile
+          </h2>
+        <p className="text-black"><strong>Name:</strong> {doctor.d_name}</p>
+        <p className="text-black"><strong>Email:</strong> {doctor.access.email}</p>
+        <p className="text-black"><strong>Specialization:</strong> {doctor.specialization}</p>
       </div>
     </div>
+      </div>
   );
 }
