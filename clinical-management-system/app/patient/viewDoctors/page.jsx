@@ -27,15 +27,17 @@ export default function SearchDoctorPage() {
       <div className="w-64 bg-cyan-600 text-white p-6 space-y-6">
         <h2 className="text-2xl font-bold">Patient Panel</h2>
 
+        <button onClick={()=>router.push("/patient/dashboard")} className="block w-full text-left p-2 hover:bg-cyan-700 rounded">Dashboard</button>
+
         <button
-          className="block w-full text-left bg-blue-600 p-2 rounded"
+          className="block w-full text-left p-2 hover:bg-cyan-700 rounded"
         >
          Doctor list
         </button>
 
         <button
-          onClick={() => router.push("/patient/appointment")}
-          className="block w-full text-left hover:bg-blue-600 p-2 rounded"
+          onClick={() => router.push("/patient/book")}
+          className="block w-full text-left p-2 hover:bg-cyan-700 rounded"
         >
           Make Appointment
         </button>

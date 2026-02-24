@@ -25,7 +25,16 @@ export default function LoginPage() {
 
           localStorage.setItem("userId", res.id);
           localStorage.setItem("userType", res.userType);
+          localStorage.setItem("email", res.email);
+        
+      if (res.userType === "Patient") {
+      localStorage.setItem("patientId", res.patientId);
+    }
 
+    if (res.userType === "Doctor") {
+      localStorage.setItem("doctorId", res.doctorId);
+    }
+    
       setMessage(`Logged in successfully as ${res.userType}`);
 
       // OPTIONAL: redirect based on role
