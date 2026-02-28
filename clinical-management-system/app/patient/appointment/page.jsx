@@ -10,19 +10,20 @@ export default function AppointmentPage() {
   const [doctorName, setDoctorName] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
+  const [patientEmail, setPatientEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
   /* AUTH CHECK */
   useEffect(() => {
     const userType = localStorage.getItem("userType");
-    const patientAccessId = localStorage.getItem("userId");
-    if (userType !== "Patient" || !patientAccessId) {
+
+    if (userType !== "Patient") {
       router.push("/login");
       return;
     }
 
-    const id = params.get("doctorAccessId");
+    const id = params.get("doctorId");
     const name = params.get("doctorName");
 
     console.log("URL PARAM doctorId =", id);
@@ -33,7 +34,7 @@ export default function AppointmentPage() {
     setDoctorId(id);
     setDoctorName(name || "");
     }
-  , [params, router]);
+  , [params]);
   
 
 
@@ -41,15 +42,16 @@ export default function AppointmentPage() {
   /* BOOK APPOINTMENT */
   async function handleBook() {
 
-    setMessage("");
-    setError("");
-
-    const patientAccessId = localStorage.getItem("userId");
-
-    if (!doctorAccessId ) {
-      setMessage("Doctor Access ID missing");
+    if (!doctorId) {
+      setMessage("Doctor ID missing");
       return;
     }
+
+      if (!patientEmail) {
+      setMessage("Enter your email");
+      return;
+    }
+
 
     if (!date || !time) {
       setMessage("Select date and time");
@@ -61,10 +63,10 @@ export default function AppointmentPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          doctorAccessId: Number(doctorAccessId),
-          patientAccessId: Number(patientAccessId),
+          doctorId: Number(doctorId),
           appointmentDate: date,
-          appointmentTime: time
+          appointmentTime: time,
+          patientEmail: patientEmail
         })
       });
 
@@ -75,11 +77,16 @@ export default function AppointmentPage() {
       setMessage("Appointment booked successfully!");
       setDate("");
       setTime("");
+      setPatientEmail("");
+      setError("");
 
     } catch (err) {
       setError(err.message || "Booking failed");
     }
   }
+
+
+
   return (
     <div className="min-h-screen flex bg-gray-100">
 
@@ -134,6 +141,19 @@ export default function AppointmentPage() {
             value={doctorName ? `Dr. ${doctorName}` : "Loading doctor..."}
             disabled
             className="w-full p-3 border rounded mb-4 text-black bg-gray-200"
+          />
+
+          {/* PATIENT EMAIL */}
+          <label className="block mb-1 text-black font-semibold">
+            Your Email
+          </label>
+
+          <input
+            type="email"
+            className="w-full p-3 border rounded mb-4 text-black"
+            value={patientEmail}
+            onChange={(e) => setPatientEmail(e.target.value)}
+            placeholder="Enter your email"
           />
 
 

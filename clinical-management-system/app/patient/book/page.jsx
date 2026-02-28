@@ -99,9 +99,9 @@ export default function SearchDoctorPage() {
                 {/* BOOK */}
                 <button
                 onClick={() => {
-                  //console.log("Sending ID:", doctor.d_id); // DEBUG LINE
+                  console.log("Sending ID:", doctor.d_id); // DEBUG LINE
                   router.push(
-                    `/patient/appointment?doctorAccessId=${doctor.access?.id}&doctorName=${encodeURIComponent(doctor.d_name)}`
+                    `/patient/appointment?doctorId=${doctor.d_id}&doctorName=${encodeURIComponent(doctor.d_name)}`
                   );
                 }}
                 className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
