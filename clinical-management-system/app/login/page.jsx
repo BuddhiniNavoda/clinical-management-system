@@ -26,6 +26,7 @@ export default function LoginPage() {
           localStorage.setItem("userId", res.id);
           localStorage.setItem("userType", res.userType);
           localStorage.setItem("email", res.email);
+          localStorage.setItem("accessId", res.id);
         
       if (res.userType === "Patient") {
       localStorage.setItem("patientId", res.patientId);

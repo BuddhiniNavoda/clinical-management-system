@@ -34,7 +34,9 @@ export default function DoctorDashboard() {
           Edit Profile
         </button>
 
-        <button className="block w-full text-left hover:bg-blue-600 p-2 rounded">
+        <button
+        onClick={() => router.push("/doctor/myAppointment")}
+         className="block w-full text-left hover:bg-blue-600 p-2 rounded">
           View Appointment
         </button>
 
