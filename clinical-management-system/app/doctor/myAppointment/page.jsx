@@ -121,7 +121,8 @@ export default function DoctorMyAppointments() {
       </div>
 
       {/* RIGHT CONTENT */}
-      <div className="flex-1 p-10 text-gray-800">
+      <div className="flex-1 p-10 text-cyan-800 font-bold mb-15">
+        <h2 className="text-2xl font-bold text-center">My Appointments</h2>
         {appointments.length === 0 ? (
           <p>No appointments found.</p>
         ) : (
@@ -142,14 +143,24 @@ export default function DoctorMyAppointments() {
                   <td>{a.appointmentDate}</td>
                   <td>{a.appointmentTime}</td>
                   <td>{a.patientEmail}</td>
-                  <td>{a.confirmed ? "CONFIRMED" : "NOT CONFIRMED"}</td>
                   <td>
-                    {!a.confirmed ? (
-                      <button onClick={() => confirm(a.id)}>Confirm</button>
+                    {a.status === "CONFIRMED" ? (
+                      <span className="text-green-600 font-bold">CONFIRMED</span>
                     ) : (
-                      <button onClick={() => unconfirm(a.id)}>Unconfirm</button>
+                      <span className="text-red-600 font-bold">NOT CONFIRMED</span>
                     )}
                   </td>
+                  <td>  
+                  <button onClick={() => changeStatus(a.id, "CONFIRMED")}
+                    className="bg-green-500 text-white px-3 py-1 rounded mr-2">
+                    Confirm
+                  </button>
+
+                  <button onClick={() => changeStatus(a.id, "NOT_CONFIRMED")}
+                    className="bg-red-500 text-white px-3 py-1 rounded">
+                    Not Confirm
+                  </button>
+                </td>
                 </tr>
               ))}
             </tbody>
